@@ -41,11 +41,26 @@ module.exports = function(passport) {
                     }
 
                     if (user) {
-                        return done(null, false);
+                        return done(null, false, {
+                            username: username
+                        });
                     }
 
+                    User.findOne({"email": req.body.email}, function(err, user) {
+                        if (err) {
+                            return done(err);
+                        }
+                        if (user) {
+                            return done(null, false, {
+                                email: req.body.email
+                            });
+                        }
+                    });
+
+
                     var newUser = new User();
-                    newUser.email = email;
+                    newUser.username = username;
+                    newUser.email = req.body.email;
                     newUser.password = newUser.generateHash(password);
 
                     newUser.save(function(err) {
@@ -55,6 +70,37 @@ module.exports = function(passport) {
                         return done(null, newUser);
                     });
                 });
+            });
+        }
+    ));
+
+    passport.use("local-login", new LocalStrategy(
+        {
+            usernameField: 'username',
+            passwordField: 'password',
+            passReqToCallback: true
+        },
+        function (req, username, password, done) {
+            console.log("JAIME >>>>> Before Async");
+            /** Async */
+            process.nextTick(function() {
+
+                User.findOne({username: username}, function(err, user) {
+                    if (err) {
+                        return done(err);
+                    }
+
+                    if (!user) {
+                        return done(null, false, req.flash('message', "The user was not found"));
+                    }
+
+                    if (!user.validatePassword(password)) {
+                        return done(null, false, req.flash('message', "Bad cretentials"));
+                    }
+
+                    return done(null, user);
+                });
+
             });
         }
     ));

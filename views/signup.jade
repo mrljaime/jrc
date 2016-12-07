@@ -1,0 +1,49 @@
+extends base
+block title
+    | Bienvenido a casa
+block content
+    style.
+        .full-mid-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .mid-container {
+            float: none;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @media screen and (max-width: 480px) {
+            .flex-width {
+                width: 95%;
+            }
+        }
+
+        @media screen and (min-width: 481px) {
+            .flex-width {
+                width: 50%;
+            }
+        }
+
+    div(class="full-mid-container")
+        div(class="mid-container")
+            div(class="flex-width")
+                form(action="signup" method="post")
+                    div(class="input-field")
+                        input(type="text" name="username" id="username" required)
+                        label(for="username") Nombre de usuario
+                    div(class="input-field")
+                        input(type="text" name="email" id="email" required)
+                        label(for="email") Correo electrónico
+                    div(class="input-field")
+                        input(type="password" name="password" id="password" required)
+                        label(for="password") Contraseña
+                    if error
+                        p #{error.message}
+                    div(class="input-field")
+                        button(class="btn") Registrarse

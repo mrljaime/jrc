@@ -1,72 +1,81 @@
-extends base
-block title
-    | Bienvenido a casa
-block content
-    style.
-        .full-mid-container {
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .mid-container {
-            float: none;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+doctype html
+html
 
-        @media screen and (max-width: 480px) {
-            .flex-width {
-                width: 95%;
+    head
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        title Bienvenido a casa
+        link(rel="stylesheet" href="/css/materialize.css")
+        link(rel="stylesheet" href="http://fonts.googleapis.com/icon?family=Material+Icons")
+
+    body
+
+        style.
+            .full-mid-container {
+                width: 100%;
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
-        }
-
-        @media screen and (min-width: 481px) {
-            .flex-width {
-                width: 50%;
+            .mid-container {
+                float: none;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
-        }
 
-    div.full-mid-container
-        div.mid-container
-            div.flex-width
-                form(action="login" method="post")
-                    div.input-field
-                        input(type="text" name="username" id="username" required)
-                        label(for="username") Nombre de usuario
-                    div.input-field
-                        input(type="password" name="password" id="password" required)
-                        label(for="password") Contraseña
-                    if message
-                     p #{message}
-                    div.input-field
-                        a(href="#forgotPassword") ¿Olvidaste tu contraseña?
-                    if failEmail
-                        p #{failEmail}
-                    if tokenError
-                        p #{tokenError}
-                    div.input-field
-                        button.btn A trabajar
-
-    div#forgotPassword.modal
-        div.modal-content
-            p Necesitas proporcionarnos una cuenta de correo electrónico para hacer la búsqueda de tu cuenta
-            form(action="/appanel/reset" method="post")
-                div.input-field
-                    input(type="email" name="resetEmail" id="resetEmail")
-                    label(for="resetEmail") Correo electrónico
-                div.input-field
-                    button.btn Enviar cambio de contraseña
-
-block script
-    script.
-        $(document).ready(function () {
-            $('.modal').modal({
-                ready: function (modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
-                    $("#resetEmail").focus();
+            @media screen and (max-width: 480px) {
+                .flex-width {
+                    width: 95%;
                 }
+            }
+
+            @media screen and (min-width: 481px) {
+                .flex-width {
+                    width: 50%;
+                }
+            }
+
+        div.full-mid-container
+            div.mid-container
+                div.flex-width
+                    form(action="login" method="post")
+                        div.input-field
+                            input(type="text" name="username" id="username" required)
+                            label(for="username") Nombre de usuario
+                        div.input-field
+                            input(type="password" name="password" id="password" required)
+                            label(for="password") Contraseña
+                        if message
+                         p #{message}
+                        div.input-field
+                            a(href="#forgotPassword") ¿Olvidaste tu contraseña?
+                        if failEmail
+                            p #{failEmail}
+                        if tokenError
+                            p #{tokenError}
+                        div.input-field
+                            button.btn A trabajar
+
+        div#forgotPassword.modal
+            div.modal-content
+                p Necesitas proporcionarnos una cuenta de correo electrónico para hacer la búsqueda de tu cuenta
+                form(action="/appanel/reset" method="post")
+                    div.input-field
+                        input(type="email" name="resetEmail" id="resetEmail")
+                        label(for="resetEmail") Correo electrónico
+                    div.input-field
+                        button.btn Enviar cambio de contraseña
+
+        script(src="/js/jquery.js")
+        script(src="/js/materialize.js")
+        script.
+            $(document).ready(function () {
+                $('.modal').modal({
+                    ready: function (modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+                        $("#resetEmail").focus();
+                    }
+                });
             });
-        });
+        block script

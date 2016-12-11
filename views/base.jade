@@ -8,9 +8,25 @@ html
         link(rel="stylesheet" href="http://fonts.googleapis.com/icon?family=Material+Icons")
 
     body
+        ul#dropdown.dropdown-content
+            li
+                a(href="/appanel/logout") Cerrar sesión
+
+        nav
+            div.nav-wrapper
+                a(href="/appanel/") Logo
+                ul#nav-mobile.right.hide-on-med-and-down
+                    li
+                        a(href="#!" data-activates="dropdown" class="dropdown-button") Perfil
+                            i.material-icons.right arraw_drop_down
         block content
 
         script(src="/js/jquery.js")
         script(src="/js/materialize.js")
+        script.
+            $(function() {
+                $(".dropdown-button").dropdown();
+            });
+
 
         block script

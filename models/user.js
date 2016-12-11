@@ -8,7 +8,9 @@ var bcrypt = require("bcrypt-nodejs");
 var userSchema = mongoose.Schema({
     email: String,
     username: String,
-    password: String
+    password: String,
+    reset_token: String,
+    expiration_token: Date
 });
 
 /** I don't want to stored my password without hashing before */

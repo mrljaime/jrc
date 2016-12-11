@@ -4,7 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var flash = require('connect-flash');
+var flash = require("connect-flash");
 
 /** Principal variable */
 var app = express();
@@ -13,6 +13,7 @@ var app = express();
 var index = require('./routes/index');
 var users = require('./routes/users');
 var appanel = require('./routes/appanel');
+var security = require("./routes/security");
 
 /** Import mongodb config */
 var mongoCfg = require('./config/mongo');
@@ -22,10 +23,11 @@ mongoose.connect(mongoCfg.url);
 /** For flash message */
 app.use(flash());
 
+
 /** Configuring Passport */
 var passport = require('passport');
 var expressSession = require('express-session');
-app.use(expressSession({secret: 'thisneedtobefuckingsecret'}));
+app.use(expressSession({secret: 'thisneedtobefuckingsecret', expiration: 60000}));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -47,6 +49,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/appanel', appanel);
+app.use('/appanel', security);
 
 
 // catch 404 and forward to error handler
@@ -65,10 +68,6 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
-});
-
-app.listen(8001, function() {
-    console.log("I'm listening at *:8001");
 });
 
 module.exports = app;

@@ -28,7 +28,7 @@ router.route("/signup")
         res.render("signup");
     })
     .post(passport.authenticate("local-signup", {
-        successRedirect: '/',
+        successRedirect: '/appanel/login',
         failureRedirect: 'signup',
         failureFlash : true
     }));
@@ -36,7 +36,10 @@ router.route("/signup")
 /** The login page */
 router.route("/login")
     .get(function(req, res, next) {
-        res.render("login");
+        res.render("login", {
+            failEmail: req.flash("error"),
+            tokenError: req.flash("tokenError")
+        });
     })
     .post(passport.authenticate("local-login", {
         successRedirect: "/appanel/",

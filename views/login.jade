@@ -30,17 +30,39 @@ block content
             }
         }
 
-    div(class="full-mid-container")
-        div(class="mid-container")
-            div(class="flex-width")
+    div.full-mid-container
+        div.mid-container
+            div.flex-width
                 form(action="login" method="post")
-                    div(class="input-field")
+                    div.input-field
                         input(type="text" name="username" id="username" required)
                         label(for="username") Nombre de usuario
-                    div(class="input-field")
+                    div.input-field
                         input(type="password" name="password" id="password" required)
                         label(for="password") Contraseña
                     if message
                     |   #{message}
-                    div(class="input-field")
-                        button(class="btn") A trabajar
+                    div.input-field
+                        a(href="#forgotPassword") ¿Olvidaste tu contraseña?
+                    if failEmail
+                        p #{failEmail}
+                    if tokenError
+                        p #{tokenError}
+                    div.input-field
+                        button.btn A trabajar
+
+    div#forgotPassword.modal
+        div.modal-content
+            p Necesitas proporcionarnos una cuenta de correo electrónico para hacer la búsqueda de tu cuenta
+            form(action="/appanel/reset" method="post")
+                div.input-field
+                    input(type="email" name="resetEmail" id="resetEmail")
+                    label(for="resetEmail") Correo electrónico
+                div.input-field
+                    button.btn Enviar cambio de contraseña
+
+block script
+    script.
+        $(document).ready(function () {
+            $('.modal').modal();
+        });

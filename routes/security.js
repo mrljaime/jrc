@@ -81,9 +81,9 @@ router.post("/reset", function (req, res, next) {
 router.route("/reset/:token")
     .get(function(req, res, next) {
         var token = req.params.token;
-        var now = new Date().getUTCDate();
+        var now = new Date().toISOString();
 
-        var whereCondition = "this.reset_token == '" + token + "' && '" + now + "' < this.expiration_token";
+        var whereCondition = "this.reset_token == '" + token + "' && ISODate('" + now + "') < this.expiration_token";
         console.log(whereCondition);
 
         /** Async to avoid res.render before search at database */

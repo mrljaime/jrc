@@ -2,7 +2,6 @@
  * Created by josejaime on 06/12/16.
  */
 var express = require("express");
-var passport = require("passport");
 var router = express.Router();
 var User = require("../models/user");
 
@@ -21,38 +20,6 @@ var isAuthenticated = function (req, res, next) {
 
     return next();
 };
-
-/** The sign up page */
-router.route("/signup")
-    .get(function(req, res, next) {
-        res.render("signup");
-    })
-    .post(passport.authenticate("local-signup", {
-        successRedirect: '/appanel/login',
-        failureRedirect: 'signup',
-        failureFlash : true
-    }));
-
-/** The login page */
-router.route("/login")
-    .get(function(req, res, next) {
-        res.render("login", {
-            failEmail: req.flash("error"),
-            tokenError: req.flash("tokenError")
-        });
-    })
-    .post(passport.authenticate("local-login", {
-        successRedirect: "/appanel/",
-        failureRedirect: 'login',
-        failureFlash : true
-    }));
-
-/** Logout */
-router.get("/logout", isAuthenticated, function(req, res) {
-    req.logout();
-    res.redirect("/appanel/login");
-});
-
 
 /** Secure index area */
 router.get("/", isAuthenticated, function(req, res) {

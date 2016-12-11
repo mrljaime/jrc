@@ -5,6 +5,7 @@ var express = require("express");
 var router = express.Router();
 var User = require("../models/user");
 var uuid = require("uuid");
+var passport = require("passport");
 
 /** Mailer */
 var nodeMailer = require('nodemailer');
@@ -15,9 +16,7 @@ var transporter = nodeMailer.createTransport(smtpConfig);
 /** Middleware */
 var isAuthenticated = function (req, res, next) {
     if (!req.isAuthenticated()) {
-        res.redirect("/appanel/login", {
-            msg: "You need to be log in first"
-        });
+        res.redirect("/appanel/login");
     }
 
     var user = req.user;
@@ -147,7 +146,44 @@ router.route("/reset/:token")
                 });
             });
         });
-
     });
+
+
+/** The sign up page */
+router.route("/signup")
+    .get(function(req, res, next) {
+        res.render("signup");
+    })
+    .post(passport.authenticate("local-signup", {
+        successRedirect: '/appanel/login',
+        failureRedirect: 'signup',
+        failureFlash : true
+    }));
+
+/** The login page */
+router.route("/login")
+    .get(function(req, res, next) {
+        if (req.isAuthenticated()) {
+            return res.redirect("/appanel/");
+        }
+
+        return res.render("login", {
+            failEmail: req.flash("error"),
+            tokenError: req.flash("tokenError"),
+            message: req.flash("message")
+        });
+    })
+    .post(passport.authenticate("local-login", {
+        successRedirect: "/appanel/",
+        failureRedirect: 'login',
+        failureFlash : true
+    }));
+
+
+/** Logout */
+router.get("/logout", isAuthenticated, function(req, res) {
+    req.logout();
+    res.redirect("/appanel/login");
+});
 
 module.exports = router;

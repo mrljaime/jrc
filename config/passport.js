@@ -1,7 +1,7 @@
 /**
  * Created by josejaime on 06/12/16.
  */
-/** This shit is used to stored new users at database */
+/** This shit is used to stored new users at database and handle login functionality */
 var LocalStrategy = require("passport-local").Strategy;
 var User = require("../models/user");
 
@@ -32,7 +32,7 @@ module.exports = function(passport) {
             process.nextTick(function() {
 
                 /**
-                 *  1. Find user by email
+                 *  1. Find user by username
                  */
                 User.findOne({'username': username}, function(err, user) {
                     console.log("JAIME >>>>> Inside searching");
@@ -46,6 +46,10 @@ module.exports = function(passport) {
                         });
                     }
 
+                    /**
+                     *  2. Find user by email
+                     */
+
                     User.findOne({"email": req.body.email}, function(err, user) {
                         if (err) {
                             return done(err);
@@ -57,6 +61,9 @@ module.exports = function(passport) {
                         }
                     });
 
+                    /**
+                     *  User was not fetch, create one
+                     */
 
                     var newUser = new User();
                     newUser.username = username;

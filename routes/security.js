@@ -9,20 +9,21 @@ var passport = require("passport");
 
 /** Mailer */
 var nodeMailer = require('nodemailer');
-var smtpConfig = 'smtps://mr.ljaime%40gmail.com:ragergirl3@smtp.gmail.com';
+var smtpConfig = '';
 var transporter = nodeMailer.createTransport(smtpConfig);
 
 
 /** Middleware */
 var isAuthenticated = function (req, res, next) {
     if (!req.isAuthenticated()) {
-        res.redirect("/appanel/login");
+        return res.redirect("/appanel/login");
     }
 
     var user = req.user;
     User.findOne({username: user.username, password: user.password}, function(err, user) {
         if (err || !user) {
-            res.redirect("/appanel/login");
+            req.logout();
+            return res.redirect("/appanel/login");
         }
     });
 
@@ -142,7 +143,7 @@ router.route("/reset/:token")
                         return res.redirect("/appanel/login");
                     }
 
-                    res.redirect("/appanel/login");
+                    return res.redirect("/appanel/login");
                 });
             });
         });
@@ -183,7 +184,7 @@ router.route("/login")
 /** Logout */
 router.get("/logout", isAuthenticated, function(req, res) {
     req.logout();
-    res.redirect("/appanel/login");
+    return res.redirect("/appanel/login");
 });
 
 module.exports = router;

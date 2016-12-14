@@ -32,7 +32,7 @@ module.exports = function(passport) {
             process.nextTick(function() {
 
                 /**
-                 *  1. Find user by username
+                 *  1. Find user by email
                  */
                 User.findOne({'username': username}, function(err, user) {
                     console.log("JAIME >>>>> Inside searching");
@@ -46,10 +46,6 @@ module.exports = function(passport) {
                         });
                     }
 
-                    /**
-                     *  2. Find user by email
-                     */
-
                     User.findOne({"email": req.body.email}, function(err, user) {
                         if (err) {
                             return done(err);
@@ -61,9 +57,6 @@ module.exports = function(passport) {
                         }
                     });
 
-                    /**
-                     *  User was not fetch, create one
-                     */
 
                     var newUser = new User();
                     newUser.username = username;

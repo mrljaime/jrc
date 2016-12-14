@@ -8,13 +8,14 @@ var User = require("../models/user");
 /** Middleware */
 var isAuthenticated = function (req, res, next) {
     if (!req.isAuthenticated()) {
-        res.redirect("/appanel/login");
+        return res.redirect("/appanel/login");
     }
 
     var user = req.user;
     User.findOne({username: user.username, password: user.password}, function(err, user) {
         if (err || !user) {
-            res.redirect("/appanel/login");
+            req.logout();
+            return res.redirect("/appanel/login");
         }
     });
 

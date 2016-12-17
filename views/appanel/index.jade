@@ -1,8 +1,18 @@
 extends ../base
 block content
-
     style.
+        .content {
+            padding-left: 300px;
+            margin-top: 0;
+            padding-top: 0;
+        }
 
-    p This is real
-    p #{user.email}
-
+        @media only screen and (max-width: 992px) {
+            header, main, footer {
+                padding-left: 0;
+            }
+        }
+    div.content
+        div.container.center-align
+            p This is real
+            p #{user.email}

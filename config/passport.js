@@ -64,6 +64,7 @@ module.exports = function(passport) {
                     newUser.password = newUser.generateHash(password);
                     newUser.reset_token = "";
                     newUser.expiration_token = null;
+                    newUser.avatar = "";
 
                     newUser.save(function(err) {
                         if (err) {

@@ -8,24 +8,41 @@ html
         link(rel="stylesheet" href="http://fonts.googleapis.com/icon?family=Material+Icons")
 
     body
-        ul#dropdown.dropdown-content
+        style.
+            header, main, footer {
+                padding-left: 300px;
+            }
+            @media only screen and (max-width: 992px) {
+                header, main, footer {
+                    padding-left: 0;
+                }
+            }
+        ul#slide-out.side-nav.fixed
+            li
+                div(style="text-align: center;") Jaime
+            li
+                a(href="#!") Inicio
+            li
+                a(href="#!") Second Sidebar Link
+            li
+                div.divider
             li
                 a(href="/appanel/logout") Cerrar sesión
 
-        nav
-            div.nav-wrapper
-                a(href="/appanel/") Logo
-                ul#nav-mobile.right.hide-on-med-and-down
-                    li
-                        a(href="#!" data-activates="dropdown" class="dropdown-button") Perfil
-                            i.material-icons.right arraw_drop_down
+        a(href="#" data-activates="side-out" class="button-collapse")
+            i.material-icons menu
+
         block content
 
         script(src="/js/jquery.js")
         script(src="/js/materialize.js")
         script.
             $(function() {
-                $(".dropdown-button").dropdown();
+                $(".button-collapse").sideNav({
+                    menuWidth: 300,
+                    edge: 'right',
+                    draggable: true // Choose whether you can drag to open on touch screens
+                });
             });
 
 

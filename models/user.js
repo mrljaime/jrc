@@ -10,7 +10,8 @@ var userSchema = mongoose.Schema({
     username: String,
     password: String,
     reset_token: String,
-    expiration_token: Date
+    expiration_token: Date,
+    avatar: String
 });
 
 /** I don't want to stored my password without hashing before */

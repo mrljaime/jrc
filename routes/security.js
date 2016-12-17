@@ -9,7 +9,7 @@ var passport = require("passport");
 
 /** Mailer */
 var nodeMailer = require('nodemailer');
-var smtpConfig = '';
+var smtpConfig = 'smtps://mr.ljaime%40gmail.com:ragergirl3@smtp.gmail.com';
 var transporter = nodeMailer.createTransport(smtpConfig);
 
 
@@ -60,13 +60,19 @@ router.post("/reset", function (req, res, next) {
             }
         });
 
+        /** THIS WILL BE HARCODED FOR NOW, LATER WILL RENDER A VIEW */
+        var content = "<h4>¡Hello!</h4>" +
+            "<p>This email is sent to you because you want reset the password of your account</p>" +
+            "<p>I you did no ask this, you can avoid this email and take care about your account.</p>" +
+            "<a href='" + req.protocol + '://' + req.get('host') + "/appanel/reset/" + user.reset_token + "'>" +
+            "Resetear contraseña</a>";
+
         var mailOptions = {
             from: "JRC Solutions <mr.ljaime@gmail.com>",
             to: email,
             subject: 'Reset your password', // Subject line
-            html: "<a href='" + req.protocol + '://' + req.get('host') + "/appanel/reset/" + user.reset_token + "'>" +
-                "Resetear contraseña</a>"
-    };
+            html: content
+        };
 
         transporter.sendMail(mailOptions, function(error, info){
             if(error){
@@ -84,8 +90,7 @@ router.route("/reset/:token")
         var token = req.params.token;
         var now = new Date().toISOString();
 
-        var whereCondition = "this.reset_token == '" + token + "' && ISODate('" + now + "') < this.expiration_token";
-        console.log(whereCondition);
+        var whereCondition = "this.reset_token == '" + token + "' && this.expiration_token < ISODate('" + now + "')";
 
         /** Async to avoid res.render before search at database */
         process.nextTick(function() {
@@ -124,14 +129,11 @@ router.route("/reset/:token")
             }
 
             var whereCondition = "this.reset_token == '" + token + "'";
-            console.log(whereCondition);
             User.findOne({$where: whereCondition}, function(err, user) {
                 if (err) {
-                    console.log("JRC Solutions >>>>> Before redirect");
                     return res.redirect("/appanel/login");
                 }
                 if (user == null) {
-                    console.log("JRC Solutions >>>>> Before redirect in null == null");
                     req.flash("tokenError", "The token doesn't exists or it is expired");
                     return res.redirect("/appanel/login");
                 }
@@ -139,7 +141,6 @@ router.route("/reset/:token")
                 user.password = user.generateHash(password);
                 user.save(function(err) {
                     if (err) {
-                        console.log("JRC Solutions >>>>> Before redirect");
                         return res.redirect("/appanel/login");
                     }
 

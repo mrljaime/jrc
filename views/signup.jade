@@ -30,20 +30,23 @@ block content
             }
         }
 
-    div(class="full-mid-container")
-        div(class="mid-container")
-            div(class="flex-width")
+    div.full-mid-container
+        div.mid-container
+            div.flex-width
                 form(action="signup" method="post")
-                    div(class="input-field")
+                    div.input-field
                         input(type="text" name="username" id="username" required)
-                        label(for="username") Nombre de usuario
-                    div(class="input-field")
-                        input(type="text" name="email" id="email" required)
-                        label(for="email") Correo electrónico
-                    div(class="input-field")
+                        label(for="username") Username
+                    div.input-field
+                        input(type="email" name="email" id="email" required)
+                        label(for="email") Email
+                    div.input-field
+                        input(type="file" name="avatar" id="avatar")
+                        label(for="avatar") Avatar
+                    div.input-field
                         input(type="password" name="password" id="password" required)
-                        label(for="password") Contraseña
+                        label(for="password") Password
                     if error
                         p #{error.message}
-                    div(class="input-field")
-                        button(class="btn") Registrarse
+                    div.input-field
+                        button.btn Sign up

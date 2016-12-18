@@ -38,15 +38,11 @@ router.post("/reset", function (req, res, next) {
             return res.redirect("/appanel/login");
         }
 
-        console.log("JAIME EN LAS TRIPAS >>>>> %s",user);
-
         if (user == null) {
             console.log("JAIME EN LAS TRIPAS >>>>> Redireccionando");
             req.flash("error", "The email that you'd use to reset your password doesn't exists");
             return res.redirect("/appanel/login");
         }
-
-        console.log("JAIME EN LAS TRIPAS >>>>> Antes de setear cosas");
 
         var tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
@@ -154,7 +150,9 @@ router.route("/reset/:token")
 /** The sign up page */
 router.route("/signup")
     .get(function(req, res, next) {
-        res.render("signup");
+        res.render("signup", {
+            error: req.flash("error")
+        });
     })
     .post(passport.authenticate("local-signup", {
         successRedirect: '/appanel/login',

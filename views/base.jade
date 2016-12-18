@@ -5,7 +5,7 @@ html
         title
             block title
         link(rel="stylesheet" href="/css/materialize.css")
-        link(rel="stylesheet" href="http://fonts.googleapis.com/icon?family=Material+Icons")
+        //link(rel="stylesheet" href="http://fonts.googleapis.com/icon?family=Material+Icons")
 
     body
         style.
@@ -17,9 +17,27 @@ html
                     padding-left: 0;
                 }
             }
+
+            .avatar {
+                width: 200px;
+                height: 200px;
+                text-align: center;
+                display: block;
+                -webkit-border-radius: 50%;
+                -moz-border-radius: 50%;
+                border-radius: 50%;
+                background-image: url("/images/jaime.jpg");
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center center;
+                margin-top: 25px;
+                margin-bottom: 25px;
+            }
+
         ul#slide-out.side-nav.fixed
             li
-                div(style="text-align: center;") Jaime
+                div(style="text-align: center; display: flex; justify-content: center;")
+                    div.avatar
             li
                 a(href="#!") Inicio
             li

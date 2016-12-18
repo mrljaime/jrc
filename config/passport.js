@@ -4,6 +4,11 @@
 /** This shit is used to stored new users at database and handle login functionality */
 var LocalStrategy = require("passport-local").Strategy;
 var User = require("../models/user");
+var uuid = require("uuid");
+
+function moveFile(file) {
+    var filename = uuid.v4();
+}
 
 /** To the universe */
 module.exports = function(passport) {
@@ -41,6 +46,7 @@ module.exports = function(passport) {
                     }
 
                     if (user) {
+                        req.flash("error", "The username get is registered");
                         return done(null, false, {
                             username: username
                         });
@@ -51,9 +57,8 @@ module.exports = function(passport) {
                             return done(err);
                         }
                         if (user) {
-                            return done(null, false, {
-                                email: req.body.email
-                            });
+                            req.flash("error", "The email get is registered");
+                            return done(null, false);
                         }
                     });
 

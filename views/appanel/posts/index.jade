@@ -1,0 +1,25 @@
+extends ../../base
+block title
+    | The post that will change the world
+block content
+    style.
+        .content {
+            padding-left: 300px;
+            margin-top: 0;
+            padding-top: 0;
+        }
+        .my-container {
+            padding: 10px 10px 10px 10px;
+            display: flex;
+        }
+        @media only screen and (max-width: 992px) {
+            header, main, footer {
+                padding-left: 0;
+            }
+        }
+    div.content
+        div.my-container
+            div.input-field
+                a(class="btn" href="posts/new") New post
+        div.my-container
+            |Here's where will put all the content for the posts and the new post button

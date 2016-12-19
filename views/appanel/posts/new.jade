@@ -1,0 +1,36 @@
+extends ../../base
+block title
+    | The post that will change the world
+block content
+    style.
+        .content {
+            padding-left: 300px;
+            margin-top: 0;
+            padding-top: 0;
+        }
+        .my-container {
+            padding: 10px 10px 10px 10px;
+        }
+        @media only screen and (max-width: 992px) {
+            header, main, footer {
+                padding-left: 0;
+            }
+        }
+    div.content
+        div.my-container
+            h3(style="text-align: center;") New post
+            div.container(style="display: block;")
+                if error
+                    p #{error}
+                form(action="" method="post")
+                    div.input-field
+                        input(type="text" name="title" id="title" maxlength="50" required)
+                        label(for="title") Title
+                    div.input-field
+                        input(type="text" name="description" id="description" maxlength="125" required)
+                        label(for="description") Description
+                    div.input-field
+                        textarea(name="content" id="content" required)
+                        label(for="content") Content
+                    div.input-field
+                        button.btn Create

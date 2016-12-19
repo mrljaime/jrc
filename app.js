@@ -14,6 +14,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var appanel = require('./routes/appanel');
 var security = require("./routes/security");
+var posts = require("./routes/post");
 
 /** Import mongodb config */
 var mongoCfg = require('./config/mongo');
@@ -49,6 +50,8 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/appanel', appanel);
 app.use('/appanel', security);
+app.use('/appanel/posts', posts);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -4,27 +4,11 @@
 var express = require("express");
 var router = express.Router();
 var User = require("../models/user");
-
-/** Middleware */
-var isAuthenticated = function (req, res, next) {
-    if (!req.isAuthenticated()) {
-        return res.redirect("/appanel/login");
-    }
-
-    var user = req.user;
-    User.findOne({username: user.username, password: user.password}, function(err, user) {
-        if (err || !user) {
-            req.logout();
-            return res.redirect("/appanel/login");
-        }
-    });
-
-    return next();
-};
+var isAuthenticated = require("../config/middleware");
 
 /** Secure index area */
 router.get("/", isAuthenticated, function(req, res) {
-    res.render("appanel/index", {
+    return res.render("appanel/index", {
         user: req.user
     });
 });

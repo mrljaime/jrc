@@ -86,7 +86,7 @@ router.route("/reset/:token")
         var token = req.params.token;
         var now = new Date().toISOString();
 
-        var whereCondition = "this.reset_token == '" + token + "' && this.expiration_token < ISODate('" + now + "')";
+        var whereCondition = "this.reset_token == '" + token + "' && ISODate('" + now + "' < this.expiration_token)";
 
         /** Async to avoid res.render before search at database */
         process.nextTick(function() {

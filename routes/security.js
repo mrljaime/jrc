@@ -9,7 +9,7 @@ var passport = require("passport");
 
 /** Mailer */
 var nodeMailer = require('nodemailer');
-var smtpConfig = 'smtps://mr.ljaime%40gmail.com:ragergirl3@smtp.gmail.com';
+var smtpConfig = '';
 var transporter = nodeMailer.createTransport(smtpConfig);
 
 

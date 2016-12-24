@@ -8,7 +8,8 @@ var postSchema = mongoose.Schema({
     title: String,
     description: String,
     content: String,
-    cover: String
+    cover: String,
+    publicationDate: Date
 });
 
 /** Creating the model */

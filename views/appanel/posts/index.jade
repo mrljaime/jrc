@@ -17,9 +17,72 @@ block content
                 padding-left: 0;
             }
         }
+
     div.content
         div.my-container
             div.input-field
                 a(class="btn" href="posts/new") New post
         div.my-container
             |Here's where will put all the content for the posts and the new post button
+        div.row
+            - each post in posts
+                div.col.s12.m6
+                    div.card.blue-grey.darken-1
+                        div.card-content.white-text
+                            span.card-title(data-id="#{post._id}") #{post.title}
+                            p #{post.description}
+                        div.card-action
+                            a(href="#") Edit
+                            a.openModal(href="#") Remove
+
+    // Invisible: modal to remove posts
+    div.modal#removePost
+        div.modal-content
+            h4 Remove post
+            p Are you sure you want to remove #[strong#publication] ?
+        div.modal-footer
+            btn.modal-action.waves-effect.waves-green.btn-flat#removeIt Remove it
+            btn.modal-action.modal-close.waves-effect.waves-green.btn-flat#cancelRemoveIt Cancel
+
+
+block script
+    script.
+        var id;
+        $(document).ready(function () {
+            // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+            $('.modal').modal();
+        });
+
+        $(".openModal").click(function (e) {
+            e.preventDefault();
+            var publication = $(this).closest(".card").find(".card-title").text();
+            $("#publication").text(publication);
+
+            $("#removePost").modal("open");
+
+            id = $(this).closest(".card").find(".card-title").attr("data-id");
+        });
+
+        $("#removeIt").click(function() {
+            var iThis = $(this);
+            $(iThis).attr("disabled", true);
+
+            $.ajax({
+                url: "/appanel/posts/remove",
+                type: "post",
+                dataType: "json",
+                data: {
+                    _id: id
+                },
+                complete: function () {
+                    $(iThis).attr("disabled", false);
+                },
+                success: function(data) {
+                    window.location.reload();
+                },
+                error: function(xhr) {
+                    alert("Error de comunicaciones");
+                }
+
+            });
+        });

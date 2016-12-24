@@ -1,6 +1,6 @@
 extends ../../base
 block title
-    | The post that will change the world
+    | #{post.title}
 block content
     style.
         .content {
@@ -22,22 +22,27 @@ block content
             div.container(style="display: block;")
                 if error
                     p #{error}
-                form(action="" method="post")
+                form(action="/appanel/posts/edit/#{post._id}" method="post")
                     div.input-field
-                        input(type="text" name="title" id="title" maxlength="125" required)
+                        input(type="text" name="title" id="title" maxlength="125" value="#{post.title}" required)
                         label(for="title") Title
                     div.input-field
-                        input(type="text" name="description" id="description" maxlength="255" required)
+                        input(type="text" name="description"
+                            id="description" maxlength="255" value="#{post.description}" required)
                         label(for="description") Description
                     div.input-field
-                        textarea.materialize-textarea(name="content" id="content" required)
+                        textarea.materialize-textarea(name="content" id="content" required) #{post.content}
                         label(for="content") Content
                     div.input-field
-                        input.datepicker(type="date" name="publicationDate" id="publicationDate")
+                        input.datepicker(type="date" name="publicationDate"
+                            id="publicationDate" value="#{post.publicationDate}" required)
                         label(for="publicationDate") Publication date
                     div.switch
                         label Inactive
-                            input(type="checkbox" name="active" id="active" value="1")
+                            - if (post.active)
+                                input(type="checkbox" name="active" id="active" value="1" checked)
+                            - else
+                                input(type="checkbox" name="active" id="active" value="1")
                             span.lever
                             |Active
                     div.field-field.input-field
@@ -45,7 +50,7 @@ block content
                             span Cover
                         input(type="file" name="cover" id="cover" required)
                     div.input-field
-                        button.btn Create
+                        button.btn Update
 
 block script
     script.

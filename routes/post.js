@@ -13,7 +13,8 @@ router.get("/", isAuthenticated, function(req, res) {
     Post.find({}, function(err, posts) {
         return res.render("appanel/posts/index", {
             user: req.user,
-            posts: posts
+            posts: posts,
+            success: req.flash("success")
         });
     });
 });
@@ -30,6 +31,12 @@ router.route("/new")
         var description = req.body.description;
         var content = req.body.content;
         var publicationDate = req.body.publicationDate;
+        var active = false;
+
+        /** To verify active exists */
+        if (req.body.active !== undefined) {
+            active = true;
+        }
 
         if (title.trim().length == 0 || description.trim().length == 0 || content.trim().length == 0) {
             req.flash("error", "Every field must be completed");
@@ -44,6 +51,7 @@ router.route("/new")
         post.content = content;
         post.cover = uuid.v4();
         post.publicationDate = publicationDate;
+        post.active = active;
 
         post.save(function (err) {
             if (err) {
@@ -53,6 +61,66 @@ router.route("/new")
         });
 
         return res.redirect("/appanel/posts/");
+    });
+
+router.route("/edit/:_id")
+    .get(isAuthenticated, function(req, res) {
+
+        var _id = req.params._id;
+        Post.findOne({_id: ObjectId(_id)}, function(err, post) {
+            if (err || !post) {
+                return res.redirect("/appanel/posts", {
+                    error: "The post doesn't exists"
+                });
+            }
+
+            return res.render("appanel/posts/edit", {
+                post: post,
+                error: req.flash("error")
+            });
+        });
+    })
+    .post(isAuthenticated, function(req, res) {
+        var _id = req.params._id;
+        var title = req.body.title;
+        var description = req.body.description;
+        var content = req.body.content;
+        var publicationDate = req.body.publicationDate;
+        var active = false;
+
+        /** To verify active exists */
+        if (req.body.active !== undefined) {
+            active = true;
+        }
+
+        if (title.trim().length == 0 || description.trim().length == 0 || content.trim().length == 0) {
+            req.flash("error", "Every field must be completed");
+            return res.redirect("/appanel/posts/edit/" + _id);
+        }
+
+        Post.findOne({_id: ObjectId(_id)}, function(err, post) {
+            if (err || !post) {
+                req.flash("error", "Can't load post");
+                return res.redirect("/appanel/posts/edit/" + _id);
+            }
+
+            post.title = title;
+            post.description = description;
+            post.content = content;
+            post.publicationDate = publicationDate;
+            post.active = active;
+
+            post.save(function(err) {
+                if (err) {
+                    req.flash("error", "Can't update post");
+                    return res.redirect("/appanel/posts/edit/" + _id);
+                }
+            });
+
+            req.flash("success", "The post '" + title + "' was updated correctly");
+            return res.redirect("/appanel/posts");
+        });
+
     });
 
 router.post("/remove", isAuthenticated, function(req, res) {

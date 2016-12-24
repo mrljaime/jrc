@@ -22,15 +22,19 @@ block content
             div.container(style="display: block;")
                 if error
                     p #{error}
-                form(action="" method="post")
+                form(action="" method="post" enctype="multipart/form-data")
                     div.input-field
-                        input(type="text" name="title" id="title" maxlength="50" required)
+                        input(type="text" name="title" id="title" maxlength="125" required)
                         label(for="title") Title
                     div.input-field
-                        input(type="text" name="description" id="description" maxlength="125" required)
+                        input(type="text" name="description" id="description" maxlength="255" required)
                         label(for="description") Description
                     div.input-field
-                        textarea(name="content" id="content" required)
+                        textarea.materialize-textarea(name="content" id="content" required)
                         label(for="content") Content
+                    div.field-field.input-field
+                        div
+                            span Cover
+                        input(type="file" name="cover" id="cover" required)
                     div.input-field
                         button.btn Create

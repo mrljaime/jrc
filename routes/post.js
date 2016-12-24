@@ -3,6 +3,7 @@
  */
 var express = require("express");
 var router = express.Router();
+var uuid = require("uuid");
 var isAuthenticated = require("../config/middleware");
 var Post = require("../models/post");
 
@@ -33,14 +34,14 @@ router.route("/new")
         post.title = title;
         post.description = description;
         post.content = content;
-        post.cover = "";
+        post.cover = uuid.v4();
 
         post.save(function (err) {
             if (err) {
                 req.flash("Error", "Can't save the new post");
                 return res.redirect("/appanel/posts/new");
             }
-        })
+        });
 
         return res.redirect("/appanel/posts/");
     });

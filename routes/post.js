@@ -10,11 +10,21 @@ var ObjectId = require('mongoose').Types.ObjectId;
 
 router.get("/", isAuthenticated, function(req, res) {
 
-    Post.find({}, function(err, posts) {
+    var search = "";
+    if (req.query.q !== undefined) {
+        search = req.query.q;
+    }
+
+    if (search.trim().length == 0) {
+        search = "";
+    }
+
+    Post.find({title: new RegExp(search, 'i')}, function(err, posts) {
         return res.render("appanel/posts/index", {
             user: req.user,
             posts: posts,
-            success: req.flash("success")
+            success: req.flash("success"),
+            q: search
         });
     });
 });

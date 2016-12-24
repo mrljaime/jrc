@@ -25,7 +25,13 @@ block content
         div.my-container
             if error
                 p #{error}
-            |Here's where will put all the content for the posts and the new post button
+            div.col.s12.m4
+                form(action="")
+                    div.input-field.col.s12.m4
+                        input(type="text" name="q" id="q" value="#{q}")
+                        label(for="q") Búsqueda
+            - if (posts.length == 0)
+                p There's doesn't exists posts or your search doesn't match with any of them
         div.row
             - each post in posts
                 div.col.s12.m6

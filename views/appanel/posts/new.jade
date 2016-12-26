@@ -22,7 +22,7 @@ block content
             div.container(style="display: block;")
                 if error
                     p #{error}
-                form(action="" method="post")
+                form(action="" method="post" enctype="multipart/form-data")
                     div.input-field
                         input(type="text" name="title" id="title" maxlength="125" required)
                         label(for="title") Title

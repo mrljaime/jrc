@@ -8,6 +8,11 @@ var isAuthenticated = require("../config/middleware");
 var Post = require("../models/post");
 var ObjectId = require('mongoose').Types.ObjectId;
 
+/** Handle multipart request */
+var multer = require("multer");
+var uploader = multer({dest: "./public/uploads/covers/"});
+var fs = require("fs");
+
 router.get("/", isAuthenticated, function(req, res) {
 
     var search = "";
@@ -36,12 +41,18 @@ router.route("/new")
             error: req.flash("error")
         })
     })
-    .post(isAuthenticated, function(req, res) {
+    .post(isAuthenticated, uploader.single("cover"), function(req, res) {
         var title = req.body.title;
         var description = req.body.description;
         var content = req.body.content;
         var publicationDate = req.body.publicationDate;
         var active = false;
+        var cover = req.file;
+
+        /** To stored cover picture */
+        var ext = cover.mimetype;
+        ext = ext.split("/")[1];
+        var filename = cover.filename + "." + ext;
 
         /** To verify active exists */
         if (req.body.active !== undefined) {
@@ -53,13 +64,35 @@ router.route("/new")
             return res.redirect("/appanel/posts/new");
         }
 
-        /** I need be sure that cover will me stored */
+        /** Ensure to upload the cover */
+        fs.readFile(cover.path, function(err, data) {
+            if (err || !data) {
+                console.log("An error has been ocurred uploading file");
+                return;
+            }
+
+            var dir = "./public/uploads/covers/";
+            var storedDir = dir + filename;
+
+            fs.writeFile(storedDir, data, function(err) {
+                if (err) {
+                    console.log("An error has been ocurred storing file");
+                }
+            });
+
+            fs.unlink(cover.path, function(err) {
+                if (err) {
+                    console.log("Can't delete original file");
+                }
+            });
+
+        });
 
         var post = new Post();
         post.title = title;
         post.description = description;
         post.content = content;
-        post.cover = uuid.v4();
+        post.cover = filename;
         post.publicationDate = publicationDate;
         post.active = active;
 

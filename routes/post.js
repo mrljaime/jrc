@@ -9,8 +9,9 @@ var Post = require("../models/post");
 var ObjectId = require('mongoose').Types.ObjectId;
 
 /** Handle multipart request */
+var uploadsDir = "./public/uploads/covers/";
 var multer = require("multer");
-var uploader = multer({dest: "./public/uploads/covers/"});
+var uploader = multer({dest: uploadsDir});
 var fs = require("fs");
 
 router.get("/", isAuthenticated, function(req, res) {
@@ -71,8 +72,7 @@ router.route("/new")
                 return;
             }
 
-            var dir = "./public/uploads/covers/";
-            var storedDir = dir + filename;
+            var storedDir = uploadsDir + filename;
 
             fs.writeFile(storedDir, data, function(err) {
                 if (err) {
@@ -166,10 +166,25 @@ router.route("/edit/:_id")
 
     });
 
+/**
+ * Remove specific post
+ */
 router.post("/remove", isAuthenticated, function(req, res) {
     var _id = req.body._id;
 
     var query = Post.findOne({_id: ObjectId(_id)});
+
+    /** First remove cover */
+    if (query.cover !== undefined) {
+        var path = dir + query.cover;
+        fs.unlink(path, function(err) {
+            if (err) {
+                console.log("Can't delete uploaded file");
+            }
+        });
+    }
+
+    /** Remove document */
     query.remove().exec(function(err) {
         if (err) {
             return res.status(404).send('Not found');

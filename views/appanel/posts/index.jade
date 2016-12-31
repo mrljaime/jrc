@@ -16,6 +16,9 @@ block content
             header, main, footer {
                 padding-left: 0;
             }
+            .content {
+                padding-left: 0;
+            }
         }
 
     div.content
@@ -94,10 +97,16 @@ block script
                     $(iThis).attr("disabled", false);
                 },
                 success: function(data) {
+                    console.log(data);
                     window.location.reload();
                 },
                 error: function(xhr) {
-                    alert("Error de comunicaciones");
+                    var contentType = xhr.getResponseHeader("content-type");
+                    if (contentType.indexOf("html") > -1) {
+                        location.reload();
+                    } else {
+                        alert("Error de comunicaciones");
+                    }
                 }
 
             });

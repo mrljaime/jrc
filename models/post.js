@@ -8,7 +8,10 @@ var postSchema = mongoose.Schema({
     title: String,
     description: String,
     content: String,
-    cover: String,
+    cover: {
+        originalname: String,
+        path: String
+    },
     active: Boolean,
     publicationDate: Date
 });

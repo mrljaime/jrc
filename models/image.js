@@ -5,7 +5,6 @@ var mongoose = require("mongoose");
 
 /** Many to one with reference in Post */
 var imageSchema = mongoose.Schema({
-    post_id: ObjectId,
     path: String
 });
 

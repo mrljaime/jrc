@@ -6,6 +6,7 @@ var router = express.Router();
 var uuid = require("uuid");
 var isAuthenticated = require("../config/middleware");
 var Post = require("../models/post");
+var Image = require("../models/image");
 var ObjectId = require('mongoose').Types.ObjectId;
 
 /** Handle multipart request */
@@ -14,8 +15,10 @@ var multer = require("multer");
 var uploader = multer({dest: uploadsDir});
 var fs = require("fs");
 
+/**
+ * Show all items
+ */
 router.get("/", isAuthenticated, function(req, res) {
-
     var search = "";
     if (req.query.q !== undefined) {
         search = req.query.q;
@@ -35,6 +38,9 @@ router.get("/", isAuthenticated, function(req, res) {
     });
 });
 
+/**
+ * Add new post
+ */
 router.route("/new")
     .get(isAuthenticated, function(req, res) {
         return res.render("appanel/posts/new", {
@@ -50,49 +56,36 @@ router.route("/new")
         var active = false;
         var cover = req.file;
 
-        /** To stored cover picture */
-        var ext = cover.mimetype;
-        ext = ext.split("/")[1];
-        var filename = cover.filename + "." + ext;
-
         /** To verify active exists */
         if (req.body.active !== undefined) {
             active = true;
         }
 
+        /**
+         * Let's be sure fields doesn't are empty
+         */
         if (title.trim().length == 0 || description.trim().length == 0 || content.trim().length == 0) {
             req.flash("error", "Every field must be completed");
             return res.redirect("/appanel/posts/new");
         }
 
         /** Ensure to upload the cover */
-        fs.readFile(cover.path, function(err, data) {
-            if (err || !data) {
-                console.log("An error has been ocurred uploading file");
-                return;
-            }
-
-            var storedDir = uploadsDir + filename;
-
-            fs.writeFile(storedDir, data, function(err) {
-                if (err) {
-                    console.log("An error has been ocurred storing file");
-                }
-            });
-
-            fs.unlink(cover.path, function(err) {
-                if (err) {
-                    console.log("Can't delete original file");
-                }
-            });
-
-        });
+        var coverData = {originalname: null, path: null};
+        if (undefined !== cover) {
+            /** To stored cover picture */
+            var ext = cover.mimetype;
+            ext = ext.split("/")[1];
+            var filename = cover.filename + "." + ext;
+            coverData.originalname = cover.originalname;
+            coverData.path = filename;
+            uploadFile(cover, filename);
+        }
 
         var post = new Post();
         post.title = title;
         post.description = description;
         post.content = content;
-        post.cover = filename;
+        post.cover = coverData;
         post.publicationDate = publicationDate;
         post.active = active;
 
@@ -106,6 +99,9 @@ router.route("/new")
         return res.redirect("/appanel/posts/");
     });
 
+/**
+ * Edit and update to post id
+ */
 router.route("/edit/:_id")
     .get(isAuthenticated, function(req, res) {
 
@@ -123,22 +119,40 @@ router.route("/edit/:_id")
             });
         });
     })
-    .post(isAuthenticated, function(req, res) {
+    .post(isAuthenticated, uploader.single("cover"), function(req, res) {
         var _id = req.params._id;
         var title = req.body.title;
         var description = req.body.description;
         var content = req.body.content;
         var publicationDate = req.body.publicationDate;
         var active = false;
+        var cover = req.file;
 
         /** To verify active exists */
         if (req.body.active !== undefined) {
             active = true;
         }
 
+        /**
+         * Let's verify fields doesn't are empty
+         */
         if (title.trim().length == 0 || description.trim().length == 0 || content.trim().length == 0) {
             req.flash("error", "Every field must be completed");
             return res.redirect("/appanel/posts/edit/" + _id);
+        }
+
+        /**
+         * To check if cover file was updated
+         */
+        var coverData = {originalname: null, path: null};
+        if (undefined !== cover) {
+            /** To stored cover picture */
+            var ext = cover.mimetype;
+            ext = ext.split("/")[1];
+            var filename = cover.filename + "." + ext;
+            coverData.originalname = cover.originalname;
+            coverData.path = filename;
+            uploadFile(cover, filename);
         }
 
         Post.findOne({_id: ObjectId(_id)}, function(err, post) {
@@ -152,6 +166,10 @@ router.route("/edit/:_id")
             post.content = content;
             post.publicationDate = publicationDate;
             post.active = active;
+
+            if (coverData.originalname != null) {
+                post.cover = coverData;
+            }
 
             post.save(function(err) {
                 if (err) {
@@ -196,5 +214,29 @@ router.post("/remove", isAuthenticated, function(req, res) {
         });
     });
 });
+
+function uploadFile(cover, filename) {
+    fs.readFile(cover.path, function(err, data) {
+        if (err || !data) {
+            console.log("An error has been ocurred uploading file");
+            return;
+        }
+
+        var storedDir = uploadsDir + filename;
+
+        fs.writeFile(storedDir, data, function(err) {
+            if (err) {
+                console.log("An error has been ocurred storing file");
+            }
+        });
+
+        fs.unlink(cover.path, function(err) {
+            if (err) {
+                console.log("Can't delete original file");
+            }
+        });
+
+    });
+}
 
 module.exports = router;

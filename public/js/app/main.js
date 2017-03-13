@@ -36,18 +36,42 @@ application.config(function($stateProvider, $httpProvider, $urlRouterProvider) {
                 //template: "<h3>Jaime está aqui</h3>"
                 controller: "IndexController"
             }
-        },
+        }
+        }).state("blog", {
+            url: "/blog",
+            views: {
+                root: {
+                    templateUrl: "/views/blog/index.html",
+                    controller: "PostController"
+                }
+            }
+        }).state("view", {
+            url: "/blog/:_id",
+            views: {
+                root: {
+                    templateUrl: "views/blog/view.html",
+                    controller: "PostViewController"
+                }
+            }
     });
+
 
     $httpProvider.interceptors.push("httpInterceptor");
 });
 
-application.run(function($rootScope) {
+application.run(function($rootScope, $window) {
 
     $rootScope.baseUrl = location.protocol +
         '//' +
         location.hostname +
         (location.port ? ':' + location.port: '') +
         "/api";
+
+    $rootScope.section = "";
+    $rootScope.back = false;
+
+    $rootScope.backHistory = function() {
+        $window.history.go(-1);
+    }
 
 });

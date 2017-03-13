@@ -1,0 +1,50 @@
+<div class="section no-pad-bot index-banner-back index-banner-back-opacity padding-30" id="index-banner">
+    <div class="container">
+        <br><br>
+        <div class="row center">
+            <a class="btn-large black-text" style="background-color: rgba(255,255,255,0.48);">
+                Bienvenidos a mi blog
+            </a>
+        </div>
+        <div class="row center">
+        </div>
+        <br><br>
+    </div>
+</div>
+<div class="section top-margin">
+    <h3 class="header center-align">Quisiera compartir contigo</h3>
+    <div class="container">
+        <div style="display: inline-block;">
+            <div class="row">
+                <div class="col s12 m8 l8" style="display: inline-block;" ng-repeat="post in posts">
+                    <div class="card hoverable" style="vertical-align: top;">
+                        <div class="card-image">
+                            <img src="/uploads/covers/{{post.cover.path}}" alt="post-cover"
+                                 class="responsive-img">
+                            <span class="card-title">{{post.title}}</span>
+                        </div>
+                        <div class="card-content">
+                            <p>
+                                {{post.description}}
+                            </p>
+                            <span>{{post.publicationDate | date : format : 'yyyy-mm-dd'}}</span>
+                        </div>
+                        <div class="card-action">
+                            <a ui-sref="view({_id: post._id})">Detalle</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m4 l4 offset-8 center-align hide-on-small-only"
+                     style="vertical-align: top;">
+                    Mis últimas entradas
+                    <ul class="collection">
+                        <li class="collection-item">Alvin</li>
+                        <li class="collection-item">Alvin</li>
+                        <li class="collection-item">Alvin</li>
+                        <li class="collection-item">Alvin</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

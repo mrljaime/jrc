@@ -9,6 +9,7 @@ html(ng-app="jrc")
         link(rel="stylesheet" href="css/materialize.css")
         link(rel="stylesheet" href="stylesheets/style.css")
         link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto")
+        link(rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons")
 
         // Scripts section
         script(src="js/jquery.js")
@@ -19,9 +20,29 @@ html(ng-app="jrc")
         //Angular application
         script(src="js/app/main.js")
         script(src="js/app/controllers/IndexController.js")
+        script(src="js/app/controllers/PostController.js")
 
     body
         div(style="position: absolute; top: 50%; right: 50%" id="loader")
             div.progress
                 div.indeterminate
+        div.navbar-fixed
+            nav.teal
+                div.nav-wrapper.container
+                    a(ui-sref="index").brand-logo Jaime
+                    a(href="#!" data-activates="mobile").button-collapse
+                        i.material-icons menu
+                    ul.right.hide-on-med-and-down
+                        li(ng-class="section == 'blog' ? 'active' : ''")
+                            a(ui-sref="blog") Blog
+                        li
+                            a(href="/appanel/login") Entrar
+                        li
+                            a(href="" ng-if="back == true" ng-click="backHistory()")
+                                i.material-icons(style="transform: rotate(180deg)") trending_flat
+                    ul#mobile.side-nav
+                        li
+                            a(ui-sref="blog") Blog
+                        li
+                            a(href="/appanel/login") Entrar
         div(ui-view="root")

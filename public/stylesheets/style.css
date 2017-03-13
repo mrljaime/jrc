@@ -17,8 +17,15 @@
 .roboto-font {
   font-family: 'Roboto', sans-serif !important;
 }
-.center-block {
-  float: none;
-  margin-left: auto;
-  margin-right: auto;
+.center-block-own {
+  float: none !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+.padding-30 {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+#sidenav-overlay {
+  z-index: 995 !important;
 }

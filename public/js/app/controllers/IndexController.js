@@ -2,6 +2,7 @@
  * Created by jaime on 12/03/17.
  */
 application.controller("IndexController", ["$rootScope", "$scope", "$http", function($rootScope, $scope, $http) {
+    $rootScope.section = "";
     $scope.contact = {
         name: "",
         email: "",
@@ -39,7 +40,5 @@ application.controller("IndexController", ["$rootScope", "$scope", "$http", func
         }, function(response) {
             Materialize.toast("Un error ha ocurrido mientras guardábamos tu comentario", 3000);
         });
-
     }
-
 }]);

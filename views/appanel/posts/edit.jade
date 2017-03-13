@@ -70,8 +70,6 @@ block content
 block script
     script.
         var date = new Date("#{post.publicationDate}");
-        date.setDate(date.getDate() + 1);
-
         var pickDate = $('.datepicker').pickadate({
             selectMonths: true, // Creates a dropdown to control month
             selectYears: 15 // Creates a dropdown of 15 years to control year

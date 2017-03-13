@@ -17,6 +17,7 @@ router.post("/contact/create", function(res, resp, next) {
     contact.name = escape(msg.name);
     contact.email = escape(msg.email);
     contact.comment = escape(msg.comment);
+    contact.created_at = new Date();
 
     contact.save(function(err) {
         if (err) {

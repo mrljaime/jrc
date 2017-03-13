@@ -1,0 +1,106 @@
+<div class="navbar-fixed">
+    <nav class="teal">
+        <div class="nav-wrapper container">
+            <a ui-sref="index" class="brand-logo">Jaime</a>
+            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="/appanel/login">Blog</a></li>
+                <li><a href="/appanel/login">Entrar</a></li>
+            </ul>
+            <ul class="side-nav" id="mobile-demo">
+                <li><a href="/appanel/login">Entrar</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<div class="section no-pad-bot index-banner-back index-banner-back-opacity" id="index-banner">
+    <div class="container">
+        <br><br>
+        <h1 class="header center teal-text text-darken-4">Random text</h1>
+        <div class="row center">
+            <a class="btn-large black-text" style="background-color: rgba(255,255,255,0.48);">
+                A modern responsive front-end framework based on material design
+            </a>
+        </div>
+        <div class="row center">
+        </div>
+        <br><br>
+    </div>
+</div>
+<div class="section top-margin">
+    <div class="container">
+        <div class="row center-align">
+            <p class="roboto-font">
+                Soy Jaime. Desarrollador con más de 3 años de experiencia. Amante de la música, el skateboarding y la
+                tencología. Me dedico a tiempo completo a desarrollar.
+                <br>
+                Actualmente soy participante de un proyecto brindado como servicio al público para llevar el control de
+                nómina, que va desde dar de alta a un empleado, llevar el control de incidencias, incapacidades, entre otros,
+                hasta el timbrado de nómina, facturación (para temas de outsource) y dispersión de la misma.
+                <br>
+                Actualmente, en mis ratos libres, me encuentro desarrollando aplicaciones web y móviles, que tienen que ver
+                con tiendas en linea, geo-localización y tiempo real.
+                <br>
+                Estoy abierto a recibir propuestas para desarrollo como freelance.
+                <br>Puedes contactarme <a href="#!" ng-click="showContactModal()">aquí</a>
+            </p>
+        </div>
+
+    </div>
+</div>
+<div class="section top margin index-banner-back-opacity">
+    <div class="container">
+        <div class="row center-align">
+            <h2 class="header">Mis proyectos</h2>
+        </div>
+        <div class="row center-align" style="display: flex; align-items: center;">
+            <div class="col s12 m6 center-block">
+                <div class="card">
+                    <div class="card-image waves-effect waves-block waves-light">
+                        <img class="activator" src="images/office.jpg">
+                    </div>
+                    <div class="card-content">
+                        <span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>
+                        <p><a href="#">This is a link</a></p>
+                    </div>
+                    <div class="card-reveal">
+                        <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
+                        <p>Here is some more information about this product that is only revealed once clicked on.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="contactModal" class="modal">
+    <div class="modal-content">
+        <form>
+            <div class="input-field">
+                <input type="text" name="name" id="name" ng-model="contact.name">
+                <label for="name">Nombre</label>
+            </div>
+            <div class="input-field">
+                <input type="email" name="email" id="emal" ng-model="contact.email">
+                <label for="emal">Correo electrónico</label>
+            </div>
+            <div class="input-field">
+                <textarea name="comment" id="comment" ng-model="contact.comment" class="materialize-textarea"></textarea>
+                <label for="comment">Comentario</label>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class=" modal-action waves-effect waves-teal btn-flat"
+            ng-click="sendContactMessage()">Agree</a>
+        <a href="#!" class=" modal-action modal-close waves-effect waves-teal btn-flat">Cancel</a>
+    </div>
+</div>
+
+<script>
+    $(".button-collapse").sideNav();
+    $(document).ready(function(){
+        // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+        $('.modal').modal();
+    });
+</script>

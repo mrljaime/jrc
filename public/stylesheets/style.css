@@ -1,8 +1,24 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+.index-banner-back {
+  background-image:
+          url("http://68.media.tumblr.com/2ddccc95090412cd08616019bbaf872c/tumblr_o19is7T7TC1qlvic5o5_r1_1280.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 99;
 }
-
-a {
-  color: #00B7FF;
+.index-banner-back-opacity {
+  background-color: rgba(0, 0, 0, 0.67);
+  z-index: 100;
+}
+.top-margin {
+  margin-top: 33px;
+  margin-bottom: 33px;
+}
+.roboto-font {
+  font-family: 'Roboto', sans-serif !important;
+}
+.center-block {
+  float: none;
+  margin-left: auto;
+  margin-right: auto;
 }

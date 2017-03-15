@@ -17,6 +17,9 @@
 .roboto-font {
   font-family: 'Roboto', sans-serif !important;
 }
+.montserrat-font {
+  font-family: 'Montserrat', cursive;
+}
 .center-block-own {
   float: none !important;
   margin-left: auto !important;

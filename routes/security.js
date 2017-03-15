@@ -6,12 +6,7 @@ var router = express.Router();
 var User = require("../models/user");
 var uuid = require("uuid");
 var passport = require("passport");
-
-/** Mailer */
-var nodeMailer = require('nodemailer');
-var smtpConfig = '';
-var transporter = nodeMailer.createTransport(smtpConfig);
-
+var mailer = require("../util/EmailUtil");
 
 /** Middleware */
 var isAuthenticated = function (req, res, next) {
@@ -39,7 +34,6 @@ router.post("/reset", function (req, res, next) {
         }
 
         if (user == null) {
-            console.log("JAIME EN LAS TRIPAS >>>>> Redireccionando");
             req.flash("error", "The email that you'd use to reset your password doesn't exists");
             return res.redirect("/appanel/login");
         }
@@ -50,32 +44,19 @@ router.post("/reset", function (req, res, next) {
         user.reset_token = uuid.v4();
         user.expiration_token = tomorrow;
 
-        user.save(function(err) {
-            if (err) {
-                return res.redirect("/appanel/login");
+        user.save();
+
+        mailer("resetPassword",
+            {
+                username: user.username,
+                link: req.protocol + '://' + req.get('host') + "/appanel/reset/" + user.reset_token
+            },
+            {
+                from: "JRC Solutions <mr.ljaime@gmail.com>",
+                to: email,
+                subject: "Password reset",
             }
-        });
-
-        /** THIS WILL BE HARCODED FOR NOW, LATER WILL RENDER A VIEW */
-        var content = "<h4>¡Hello!</h4>" +
-            "<p>This email is sent to you because you want reset the password of your account</p>" +
-            "<p>I you did no ask this, you can avoid this email and take care about your account.</p>" +
-            "<a href='" + req.protocol + '://' + req.get('host') + "/appanel/reset/" + user.reset_token + "'>" +
-            "Resetear contraseña</a>";
-
-        var mailOptions = {
-            from: "JRC Solutions <mr.ljaime@gmail.com>",
-            to: email,
-            subject: 'Reset your password', // Subject line
-            html: content
-        };
-
-        transporter.sendMail(mailOptions, function(error, info){
-            if(error){
-                return console.log(error);
-            }
-            console.log('Message sent: ' + info.response);
-        });
+        );
 
         return res.redirect("/appanel/login");
     });

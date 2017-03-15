@@ -5,7 +5,7 @@ const fs = require("fs");
 const _jade = require("jade");
 const mailer = require("nodemailer");
 const mailerConfig = require("../config/mail");
-const mailSender = mailer.createTransport(mailerConfig);
+const mailSender = mailer.createTransport(mailerConfig.credentials);
 
 var renderView = function(view, content, options) {
     var template = process.cwd() + "/views/email/" + view + ".jade";
@@ -18,14 +18,16 @@ var renderView = function(view, content, options) {
         var compiledTmpl = _jade.compile(file, {filename: template});
         options.html = compiledTmpl(content);
 
-        mailSender.sendMail(options, function(err, info) {
-            if (err) {
-                console.log(err);
-                return;
-            }
+        if (mailerConfig.enable) {
+            mailSender.sendMail(options, function(err, info) {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
 
-            console.log(info);
-        });
+                console.log(info);
+            });
+        }
     });
 }
 

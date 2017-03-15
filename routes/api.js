@@ -10,6 +10,7 @@ var escape = require("escape-html");
  */
 var Contact = require("../models/contact");
 var Post = require("../models/post");
+var mailer = require("../util/EmailUtil");
 
 router.post("/contact/create", function(res, resp, next) {
     var msg = res.body;
@@ -27,6 +28,19 @@ router.post("/contact/create", function(res, resp, next) {
                 msg: "No se ha podido guardar el comentario."
             });
         }
+
+        mailer("newContactMessage",
+            {
+                name: contact.name,
+                email: contact.email,
+                comment: contact.comment
+            },
+            {
+                from: "JRC Solutions <mr.ljaime@gmail.com>",
+                to: "mr.ljaime@gmail.com",
+                subject: "New Contact Message",
+            }
+        );
 
         return resp.json({
             code: 201,

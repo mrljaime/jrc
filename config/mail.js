@@ -2,9 +2,9 @@
  * Created by jaime on 14/03/17.
  */
 module.exports = {
-    service: "",
+    service: "gmail",
     auth: {
-        user: "",
-        pass: ""
+        user: "mr.ljaime@gmail.com",
+        pass: "ragergirl3"
     }
 };

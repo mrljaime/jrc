@@ -31,7 +31,7 @@ block content
             div.container(style="display: block;")
                 if error
                     p #{error}
-                form(action="/appanel/posts/edit/#{post._id}" method="post" enctype="multipart/form-data")
+                form(action="/appanel/posts/edit/#{post._id}" method="post" enctype="multipart/form-data" id="theForm")
                     div.input-field
                         input(type="text" name="title" id="title" maxlength="125" value="#{post.title}" required)
                         label(for="title") Title
@@ -46,6 +46,10 @@ block content
                         input.datepicker(type="date" name="publicationDate"
                             id="publicationDate" value="#{post.publicationDate}" required)
                         label(for="publicationDate") Publication date
+                    div.input-field
+                        div.chips.chips-placeholder
+                        input(type="hidden" name="tags" id="tags" value="#{post.tags}")
+                        label Tags
                     div.switch
                         label Inactive
                             - if (post.active)
@@ -86,4 +90,32 @@ block script
 
                 reader.readAsDataURL(this.files[0]);
             }
+        });
+
+        $(".chips-placeholder").material_chip();
+
+        $(function() {
+            var tags = $("#tags").val().split(",");
+            var chipData = [];
+            if (tags.length > 1) {
+                for (var i in tags) {
+                    chipData.push({
+                        tag: tags[i],
+                    });
+                }
+
+                $('.chips-placeholder').material_chip({
+                    data: chipData
+                });
+            }
+        })
+
+        $("#theForm").submit(function (e) {
+            var data = [];
+            var tags = $(".chips").material_chip("data");
+            for (var i in tags) {
+                var iTag = tags[i];
+                data.push(iTag.tag);
+            }
+            $("#tags").val(data);
         });

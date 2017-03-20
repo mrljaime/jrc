@@ -38,29 +38,12 @@
         <div class="row center-align">
             <h2 class="header">Mis proyectos</h2>
         </div>
-        <div class="row center-align" style="display: flex; align-items: center;">
-            <div class="col s12 m6 center-block">
-                <div class="card">
-                    <div class="card-image waves-effect waves-block waves-light">
-                        <img class="activator" src="images/office.jpg">
-                    </div>
-                    <div class="card-content">
-                        <span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>
-                        <p><a href="#">This is a link</a></p>
-                    </div>
-                    <div class="card-reveal">
-                        <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
-                        <p>Here is some more information about this product that is only revealed once clicked on.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 
 <div id="contactModal" class="modal">
     <div class="modal-content">
-        <span>Que tal, si quieres ponerte en contacto conmigo déjame un mensaje, en breve me pongo en contacto contigo</span>
+        <span>Que tal, si quieres ponerte en contacto conmigo déjame un mensaje, en breve tendrás una respuesta</span>
         <form>
             <div class="input-field">
                 <input type="text" name="name" id="name" ng-model="contact.name">
@@ -84,7 +67,12 @@
 </div>
 
 <script>
-    $(".button-collapse").sideNav();
+    $(".button-collapse").sideNav({
+        menuWidth: 250,
+        edge: 'left',
+        closeOnClick: true,
+        draggable: true
+    });
     $(document).ready(function(){
         // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
         $('.modal').modal();

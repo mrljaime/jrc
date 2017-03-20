@@ -53,6 +53,7 @@ router.route("/new")
         var description = req.body.description;
         var content = req.body.content;
         var publicationDate = req.body.publicationDate;
+        var tags = req.body.tags;
         var active = false;
         var cover = req.file;
 
@@ -87,6 +88,7 @@ router.route("/new")
         post.content = content;
         post.cover = coverData;
         post.publicationDate = publicationDate;
+        post.tags = tags.split(",");
         post.active = active;
 
         post.save(function (err) {
@@ -125,6 +127,7 @@ router.route("/edit/:_id")
         var description = req.body.description;
         var content = req.body.content;
         var publicationDate = req.body.publicationDate;
+        var tags = req.body.tags;
         var active = false;
         var cover = req.file;
 
@@ -165,6 +168,7 @@ router.route("/edit/:_id")
             post.description = description;
             post.content = content;
             post.publicationDate = publicationDate;
+            post.tags = tags.split(",");
             post.active = active;
 
             if (coverData.originalname != null) {

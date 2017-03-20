@@ -4,6 +4,7 @@ block title
 block content
     style.
         .content {
+            width: 100%;
             padding-left: 300px;
             margin-top: 0;
             padding-top: 0;
@@ -11,6 +12,7 @@ block content
             vertical-align: middle;
         }
         .my-container {
+            width: 100%;
             padding: 10px 10px 10px 10px;
         }
         @media only screen and (max-width: 992px) {
@@ -25,11 +27,12 @@ block content
     div.content
         div.my-container
             h3(style="text-align: center;") New post
-            div.container(style="display: flex;")
+            div.container(style="display: block;")
                 if error
                     p #{error}
-                form(action="" method="post" enctype="multipart/form-data")
-                    div.input-field
+                div.row
+                form(action="" method="post" enctype="multipart/form-data" id="theForm")
+                    div.input-field.col.s12.m12.l12
                         input(type="text" name="title" id="title" maxlength="125" required)
                         label(for="title") Title
                     div.input-field
@@ -41,9 +44,12 @@ block content
                     div.input-field
                         input.datepicker(type="date" name="publicationDate" id="publicationDate")
                         label(for="publicationDate") Publication date
+                    div.input-field
+                        div.chips.chips-placeholder
+                        label Tags
                     div.switch
                         label Inactive
-                            input(type="checkbox" name="active" id="active" value="1")
+                            input(type="checkbox" name="active" id="active" value="1" checked="checked")
                             span.lever
                             |Active
                     div.field-field.input-field
@@ -58,4 +64,19 @@ block script
         $('.datepicker').pickadate({
             selectMonths: true, // Creates a dropdown to control month
             selectYears: 15 // Creates a dropdown of 15 years to control year
+        });
+
+        $('.chips-placeholder').material_chip();
+
+        $("#theForm").submit(function(e) {
+            var data = [];
+            var tags = $(".chips").material_chip("data");
+            for (var i in tags) {
+                var iTag = tags[i];
+                data.push(iTag.tag);
+            }
+
+            $("#theForm").append(
+                "<input type='hidden' name='tags' value='" + data + "'>"
+            );
         });

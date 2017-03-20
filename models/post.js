@@ -5,15 +5,16 @@ var mongoose = require("mongoose");
 
 /** Schema for every post in the blog section */
 var postSchema = mongoose.Schema({
-    title: String,
-    description: String,
-    content: String,
+    title:              String,
+    description:        String,
+    content:            String,
     cover: {
-        originalname: String,
-        path: String
+        originalname:   String,
+        path:           String
     },
-    active: Boolean,
-    publicationDate: Date
+    active:             Boolean,
+    publicationDate:    Date,
+    tags:               Array
 });
 
 /** Creating the model */

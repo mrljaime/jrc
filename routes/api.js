@@ -69,11 +69,42 @@ router.get("/posts", function(res, resp, next) {
             });
         }
 
-        return resp.json({
-            code: 200,
-            data: posts
-        });
+        /** Get all posible tags */
+        Post.find().distinct("tags", function(err, tags) {
+            return resp.json({
+                code: 200,
+                data: posts,
+                tags: tags
+            });
+        }) ;
+
     });
+});
+
+/**
+ * Get all post by filtered tags
+ */
+router.post("/posts", function(req, resp, next) {
+    var tags = req.body;
+    Post.find({
+        tags: {
+            $in: tags.filteredTags
+        }
+    }).select({_id: 1, title: 1, description: 1, publicationDate: 1, cover: 1})
+        .sort({_id: -1})
+        .exec(function(err, posts) {
+            if (err) {
+                return resp.json({
+                    code: 500,
+                    msg: "Ocurrió un error inesperado"
+                });
+            }
+
+            return resp.json({
+                code: 200,
+                data: posts
+            });
+        });
 });
 
 /**

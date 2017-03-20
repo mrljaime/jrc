@@ -23,13 +23,16 @@ html(ng-app="jrc")
         script(src="js/app/controllers/PostController.js")
 
     body
-        div(style="position: absolute; top: 50%; right: 50%" id="loader")
-            div.progress
-                div.indeterminate
+        div(style="position:absolute;z-index: 999 !important;left: 50%;top:  50%;" id="loader")
+            div.preloader-wrapper.active
+                div.spinner-layer.spinner-green-only
+                    div.circle-clipper.left
+                        div.circle
+
         div.navbar-fixed
             nav.teal
                 div.nav-wrapper.container
-                    a(ui-sref="index").brand-logo Jaime
+                    a(ui-sref="index").brand-logo Logo
                     a(href="#!" data-activates="mobile").button-collapse
                         i.material-icons menu
                     ul.right.hide-on-med-and-down

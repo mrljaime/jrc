@@ -93,7 +93,9 @@ router.post("/posts", function(req, resp, next) {
         },
         content: {
             $regex: ".*" + searchable.search + ".*"
-        }
+        },
+        active: true,
+        publicationDate: {$lt: new Date()}
     }).select({_id: 1, title: 1, description: 1, publicationDate: 1, cover: 1})
         .sort({_id: -1})
         .exec(function(err, posts) {

@@ -95,9 +95,15 @@ block script
         $(".chips-placeholder").material_chip();
 
         $(function() {
-            var tags = $("#tags").val().split(",");
+            var tags;
+            if ($("#tags").val().indexOf(",") != -1) {
+                tags = $("#tags").val().split(",");
+            } else {
+                tags = [$("#tags").val()];
+            }
+
             var chipData = [];
-            if (tags.length > 1) {
+            if (tags.length >= 1) {
                 for (var i in tags) {
                     chipData.push({
                         tag: tags[i],

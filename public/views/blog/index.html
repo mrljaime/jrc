@@ -43,6 +43,12 @@
                 <div class="card">
                     <div class="card-content">
                         <span class="card-title">Tags</span>
+                        <form ng-submit="searchAction()">
+                            <div class="input-field">
+                                <input type="text" ng-name="searchField" ng-id="searchField" placeholder="Búsqueda"
+                                    ng-model="searchField.text">
+                            </div>
+                        </form>
                         <p ng-repeat="tag in tags" class="left-align">
                             <input type="checkbox" value="{{tag}}" id="{{$index}}" checked="checked" class="filled-in"
                                 ng-click="changeFilterTag(tag)"/>

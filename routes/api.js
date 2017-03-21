@@ -85,10 +85,14 @@ router.get("/posts", function(res, resp, next) {
  * Get all post by filtered tags
  */
 router.post("/posts", function(req, resp, next) {
-    var tags = req.body;
+    var searchable = req.body;
+
     Post.find({
         tags: {
-            $in: tags.filteredTags
+            $in: searchable.filteredTags
+        },
+        content: {
+            $regex: ".*" + searchable.search + ".*"
         }
     }).select({_id: 1, title: 1, description: 1, publicationDate: 1, cover: 1})
         .sort({_id: -1})

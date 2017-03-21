@@ -9,6 +9,7 @@ application.controller("PostController", ["$rootScope", "$scope", "$http", funct
     $scope.posts = {};
     $scope.tags = [];
     $scope.filterTags = [];
+    $scope.searchField = {text: ""};
 
     $http({
         method: "GET",
@@ -52,8 +53,10 @@ application.controller("PostController", ["$rootScope", "$scope", "$http", funct
         }
 
         updateContent();
+    };
 
-        console.log($scope.filterTags);
+    $scope.searchAction = function() {
+        updateContent();
     };
 
     function updateContent() {
@@ -66,13 +69,14 @@ application.controller("PostController", ["$rootScope", "$scope", "$http", funct
             }
         }
 
-        filtered = {
-            filteredTags: filtered
+        var data = {
+            filteredTags: filtered,
+            search: $scope.searchField.text
         };
 
         $http({
             method: "POST",
-            data: filtered,
+            data: data,
             url: $rootScope.baseUrl + "/posts",
             headers: {
                 "content-type": "application/json",

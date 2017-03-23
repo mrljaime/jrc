@@ -12,6 +12,10 @@ var postSchema = mongoose.Schema({
         originalname:   String,
         path:           String
     },
+    backcover: {
+        originalname:   String,
+        path:           String
+    },
     active:             Boolean,
     publicationDate:    Date,
     tags:               Array

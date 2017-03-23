@@ -48,14 +48,16 @@ router.route("/new")
             error: req.flash("error")
         })
     })
-    .post(isAuthenticated, uploader.single("cover"), function(req, res) {
+    /** Defined to create a new post */
+    .post(isAuthenticated, uploader.any(), function(req, res) {
         var title = req.body.title;
         var description = req.body.description;
         var content = req.body.content;
         var publicationDate = req.body.publicationDate;
         var tags = req.body.tags;
         var active = false;
-        var cover = req.file;
+        var cover = req.files[0];
+        var backCover = req.files[1];
 
         /** To verify active exists */
         if (req.body.active !== undefined) {
@@ -72,6 +74,8 @@ router.route("/new")
 
         /** Ensure to upload the cover */
         var coverData = {originalname: null, path: null};
+        var backcoverData = {originalname: null, path: null};
+
         if (undefined !== cover) {
             /** To stored cover picture */
             var ext = cover.mimetype;
@@ -82,11 +86,22 @@ router.route("/new")
             uploadFile(cover, filename);
         }
 
+        if (undefined !== backCover) {
+            /** To stored back cover picture */
+            var ext = backCover.mimetype;
+            ext = ext.split("/")[1];
+            var filename = backCover.filename + "." + ext;
+            backcoverData.originalname = backCover.originalname;
+            backcoverData.path = filename;
+            uploadFile(backCover, filename);
+        }
+
         var post = new Post();
         post.title = title;
         post.description = description;
         post.content = content;
         post.cover = coverData;
+        post.backcover = backcoverData;
         post.publicationDate = publicationDate;
         post.tags = tags.split(",");
         post.active = active;

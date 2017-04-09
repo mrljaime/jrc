@@ -136,7 +136,7 @@ router.route("/edit/:_id")
             });
         });
     })
-    .post(isAuthenticated, uploader.single("cover"), function(req, res) {
+    .post(isAuthenticated, uploader.any(), function(req, res) {
         var _id = req.params._id;
         var title = req.body.title;
         var description = req.body.description;
@@ -144,7 +144,18 @@ router.route("/edit/:_id")
         var publicationDate = req.body.publicationDate;
         var tags = req.body.tags;
         var active = false;
-        var cover = req.file;
+        var cover = req.files[0];
+        var backCover = req.files[1];
+
+        /**
+         * To verify if files has the same filename of the field
+         */
+        if (cover !== undefined && cover.fieldname === "backcover") {
+            backCover = req.files[0];
+            cover = undefined;
+        }
+
+        debug(cover); debug(backCover); /* Debugging */
 
         /** To verify active exists */
         if (req.body.active !== undefined) {
@@ -159,10 +170,10 @@ router.route("/edit/:_id")
             return res.redirect("/appanel/posts/edit/" + _id);
         }
 
-        /**
-         * To check if cover file was updated
-         */
+        /** Ensure to upload the cover */
         var coverData = {originalname: null, path: null};
+        var backcoverData = {originalname: null, path: null};
+
         if (undefined !== cover) {
             /** To stored cover picture */
             var ext = cover.mimetype;
@@ -173,11 +184,27 @@ router.route("/edit/:_id")
             uploadFile(cover, filename);
         }
 
+        if (undefined !== backCover) {
+            /** To stored back cover picture */
+            var ext = backCover.mimetype;
+            ext = ext.split("/")[1];
+            var filename = backCover.filename + "." + ext;
+            backcoverData.originalname = backCover.originalname;
+            backcoverData.path = filename;
+            uploadFile(backCover, filename);
+        }
+
         Post.findOne({_id: ObjectId(_id)}, function(err, post) {
             if (err || !post) {
                 req.flash("error", "Can't load post");
                 return res.redirect("/appanel/posts/edit/" + _id);
             }
+
+            /**
+             * Lets trate before insert
+             */
+            content.replace(/1*/g, "<strong>");
+            content.replace(/2*/g, "</strong");
 
             post.title = title;
             post.description = description;
@@ -188,6 +215,9 @@ router.route("/edit/:_id")
 
             if (coverData.originalname != null) {
                 post.cover = coverData;
+            }
+            if (backcoverData.originalname != null) {
+                post.backcover = backcoverData;
             }
 
             post.save(function(err) {
@@ -256,6 +286,10 @@ function uploadFile(cover, filename) {
         });
 
     });
+}
+
+function debug(Object) {
+    console.log(Object);
 }
 
 module.exports = router;

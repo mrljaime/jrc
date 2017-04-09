@@ -65,9 +65,17 @@ block content
                             value="#{post.cover.originalname}")
                     div.row.center-align
                         - if (post.cover.originalname != null)
-                            div.col.s12.m6.center-align.center-block
-                                img(src="/uploads/covers/#{post.cover.path}" class="responsive-img center-block"
-                                    id="coverImg")
+                        div.col.s12.m6.center-align.center-block
+                            img(src="/uploads/covers/#{post.cover.path}" class="responsive-img center-block"
+                            id="coverImg")
+                    div.field-field.input-field
+                        div
+                            span Back cover
+                        input(type="file" name="backcover" id="backcover")
+                    div.row.center-align
+                        - if (post.backcover.originalname != null)
+                            img(src="/uploads/covers/#{post.backcover.path}" class="responsive-img center-block"
+                            id="backcoverImg")
                     div.input-field
                         button.btn Update
 
